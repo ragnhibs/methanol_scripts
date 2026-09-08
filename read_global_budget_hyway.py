@@ -48,7 +48,7 @@ molecw_list = {'ch3oh':32.032,
                #'o3':48.0,
                #'mhp':48.042}
 
-molecw_list = {'ch3oh':32.032} 
+molecw_list = {'ch4':16.042}#'ch3oh':32.032} 
 
 
 

@@ -108,8 +108,8 @@ for model_id in model_list:
         #print(surfconc[model_id]*conv)
         
         #ax.plot(surfconc.index, surfconc[model_id]*conv,color=color_list[model_id])
-        if experiment_id == 'cntr':
-            ax.plot(surfconc_yearmean.index, surfconc_yearmean*conv,symlist[experiment_id],color=color_list[model_id],label=model_id + " ({:.1f})".format(surfconc_yearmean.mean()*conv))
+        #if experiment_id == 'cntr':
+        ax.plot(surfconc_yearmean.index, surfconc_yearmean*conv,symlist[experiment_id],color=color_list[model_id],label=model_id + " ({:.1f})".format(surfconc_yearmean.mean()*conv))
 
 
         #Burden
@@ -127,8 +127,8 @@ for model_id in model_list:
 
         # Convert yearly index to datetime for plotting
         burden_yearmean.index = pd.to_datetime(burden_yearmean.index.astype(str) + '-07-01')  # Mid-year for visibility
-        if experiment_id == 'cntr':
-            ax.plot(burden_yearmean.index, burden_yearmean,symlist[experiment_id],color=color_list[model_id],label=model_id + " ({:.1f})".format(burden_yearmean.mean()))
+        #if experiment_id == 'cntr':
+        ax.plot(burden_yearmean.index, burden_yearmean,symlist[experiment_id],color=color_list[model_id],label=model_id + " ({:.1f})".format(burden_yearmean.mean()))
 
 
         #Atmospheric production:
@@ -153,8 +153,8 @@ for model_id in model_list:
         #ax.plot(atmloss[model_id],color=color_list[model_id])
         atmloss_yearmean = sum_annual_mean(atmloss)
         atmloss_yearmean.index = pd.to_datetime(atmloss_yearmean.index.astype(str) + '-07-01')  # Mid-year for visibility
-        if experiment_id == 'cntr':
-            ax.plot(atmloss_yearmean.index, atmloss_yearmean,symlist[experiment_id],color=color_list[model_id],label=model_id + " ({:.1f})".format(atmloss_yearmean.mean()))
+        #if experiment_id == 'cntr':
+        ax.plot(atmloss_yearmean.index, atmloss_yearmean,symlist[experiment_id],color=color_list[model_id],label=model_id + " ({:.1f})".format(atmloss_yearmean.mean()))
 
 
 
@@ -191,10 +191,10 @@ for model_id in model_list:
         
         print(atmlifetime_yearmean)
         
-        if experiment_id == 'cntr':
-            ax.plot(atmlifetime_yearmean.index, atmlifetime_yearmean,
-                    symlist[experiment_id],color=color_list[model_id],
-                    label=model_id + " ({:.1f})".format(atmlifetime_yearmean.mean()))
+        #if experiment_id == 'cntr':
+        ax.plot(atmlifetime_yearmean.index, atmlifetime_yearmean,
+                symlist[experiment_id],color=color_list[model_id],
+                label=model_id + " ({:.1f})".format(atmlifetime_yearmean.mean()))
     
     
         
