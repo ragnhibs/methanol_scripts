@@ -13,6 +13,8 @@ import glob
 
 
 def add_2000yr(index):
+    print(index)
+    exit()
     idx = index.astype(str)
     
     # 1) Split year and the rest
@@ -78,7 +80,10 @@ def read_global_burden(variable_id,table_id,experiment_id,project_id,member_id,m
 
     #Add years to the index to make this work
     if model_id == 'GFDL-ESM4-c1':
-        df.index = add_2000yr(df.index)
+        if experiment_id == 'transient2010s':
+            print('keep')
+        else:
+            df.index = add_2000yr(df.index)
     
     df.to_csv('results_csv/monthly_burden_'+variable_id+'_'+table_id+'_'+model_id+'_'+member_id+'_'+project_id + '_' +experiment_id + '.csv')
 
@@ -134,7 +139,11 @@ def  read_global_burden_aerosols(variable_id,table_id,experiment_id,project_id,m
 
 
     if model_id == 'GFDL-ESM4-c1':
-        df.index = add_2000yr(df.index)
+        if experiment_id == 'transient2010s':
+            print('keep')
+        else:
+            df.index = add_2000yr(df.index)
+            
 
     print(df)
 
@@ -182,8 +191,12 @@ def read_global_surfconc(variable_id,table_id,experiment_id,project_id,member_id
     df = globalmean.to_dataframe(name=model_id +'_' +member_id)
 
     if model_id == 'GFDL-ESM4-c1':
-        df.index = add_2000yr(df.index)
+        if experiment_id == 'transient2010s':
+            print('keep')
+        else:
+            df.index = add_2000yr(df.index)
 
+            
     print(df)
 
 
@@ -241,7 +254,10 @@ def read_global_atmprod(variable_id,table_id,experiment_id,project_id,member_id,
     df = atmprod.to_dataframe(name=model_id +'_' +member_id)
 
     if model_id == 'GFDL-ESM4-c1':
-        df.index = add_2000yr(df.index)
+        if experiment_id == 'transient2010s':
+            print('keep')
+        else:
+            df.index = add_2000yr(df.index)
 
     print(df)
 
@@ -294,7 +310,10 @@ def read_global_photoprod(variable_id,table_id,experiment_id,project_id,member_i
 
 
     if model_id == 'GFDL-ESM4-c1':
-        df.index = add_2000yr(df.index)
+        if experiment_id == 'transient2010s':
+            print('keep')
+        else:
+            df.index = add_2000yr(df.index)
 
     print(df)
 
@@ -356,7 +375,10 @@ def read_global_atmloss(variable_id,table_id,experiment_id,project_id,member_id,
     df = atmloss.to_dataframe(name=model_id +'_' +member_id)
 
     if model_id == 'GFDL-ESM4-c1':
-        df.index = add_2000yr(df.index)
+        if experiment_id == 'transient2010s':
+            print('keep')
+        else:
+            df.index = add_2000yr(df.index)
 
     print(df)
     
@@ -402,7 +424,10 @@ def read_global_photoloss(variable_id,table_id,experiment_id,project_id,member_i
 
     df = atmloss.to_dataframe(name=model_id +'_' +member_id)
     if model_id == 'GFDL-ESM4-c1':
-        df.index = add_2000yr(df.index)
+        if experiment_id == 'transient2010s':
+            print('keep')
+        else:
+            df.index = add_2000yr(df.index)
 
     print(df)
     df.to_csv('results_csv/monthly_photoloss_'+variable_id+'_'+table_id+'_'+model_id+'_'+member_id+'_'+project_id + '_' +experiment_id + '.csv')
@@ -446,7 +471,10 @@ def read_global_soilsink(variable_id,table_id,experiment_id,project_id,member_id
 
     df = data.to_dataframe(name=model_id +'_' +member_id)
     if model_id == 'GFDL-ESM4-c1':
-        df.index = add_2000yr(df.index)
+        if experiment_id == 'transient2010s':
+            print('keep')
+        else:
+            df.index = add_2000yr(df.index)
 
     print(df)
     df.to_csv('results_csv/monthly_soilsink_'+variable_id+'_'+table_id+'_'+model_id+'_'+member_id+'_'+project_id + '_' +experiment_id + '.csv')
@@ -489,7 +517,10 @@ def read_global_wetdep(variable_id,table_id,experiment_id,project_id,member_id,m
 
     df = data.to_dataframe(name=model_id +'_' +member_id)
     if model_id == 'GFDL-ESM4-c1':
-        df.index = add_2000yr(df.index)
+        if experiment_id == 'transient2010s':
+            print('keep')
+        else:
+            df.index = add_2000yr(df.index)
 
     print(df)
     df.to_csv('results_csv/monthly_wetdep_'+variable_id+'_'+table_id+'_'+model_id+'_'+member_id+'_'+project_id + '_' +experiment_id + '.csv')
@@ -533,7 +564,10 @@ def read_global_emis(variable_id,table_id,experiment_id,project_id,member_id,mol
     df = data.to_dataframe(name=model_id +'_' +member_id)
     print(df)
     if model_id == 'GFDL-ESM4-c1':
-        df.index = add_2000yr(df.index)
+        if experiment_id == 'transient2010s':
+            print('keep')
+        else:
+            df.index = add_2000yr(df.index)
 
     print(df)
     df.to_csv('results_csv/monthly_emis_'+variable_id+'_'+table_id+'_'+model_id+'_'+member_id+'_'+project_id + '_' +experiment_id + '.csv')
