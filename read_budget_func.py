@@ -219,6 +219,8 @@ def read_global_atmprod(variable_id,table_id,experiment_id,project_id,member_id,
         
     if model_id == 'NorESM2-LM-C':         
         file_volume = 'volume'+'_'+table_id+'_'+model_id+'_'+project_id + '_' +experiment_id+'_'+member_id+'_'+time_range+'12.nc'
+    elif model_id ==  'UKESM1-0-LL' :
+        file_volume = 'volcella'+'_'+table_id+'_'+model_id+'_'+project_id + '_' +experiment_id+'_'+member_id+'_'+time_range+'.nc'
     else:
         file_volume = 'volume'+'_'+table_id+'_'+model_id+'_'+project_id + '_' +experiment_id+'_'+member_id+'_'+time_range+'.nc'
 
@@ -240,10 +242,20 @@ def read_global_atmprod(variable_id,table_id,experiment_id,project_id,member_id,
     
 
     if model_id == 'CESM2-v212':
+        volume['time'] = model_data['time']
         volume['lat'] = model_data['lat']
         volume['lev'] = model_data['lev']
+        print(volume['lon'] - model_data['lon'])
+        print(volume['time'] - model_data['time'])
+        print(volume['lev'] - model_data['lev'])
+        print(volume['lat'] - model_data['lat'])
     
+    
+    if model_id == 'UKESM1-0-LL' and experiment_id == 'transient2010s':
+        volume = volume.rename({'volcella': 'volume'})
 
+
+        
     atmprod = model_data['prod'+variable_id]*volume['volume']
 
     days_in_month = model_data['time'].dt.days_in_month
@@ -283,6 +295,8 @@ def read_global_photoprod(variable_id,table_id,experiment_id,project_id,member_i
         
     if model_id == 'NorESM2-LM-C':         
         file_volume = 'volume'+'_'+table_id+'_'+model_id+'_'+project_id + '_' +experiment_id+'_'+member_id+'_'+time_range+'12.nc'
+    elif model_id ==  'UKESM1-0-LL' :
+        file_volume = 'volcella'+'_'+table_id+'_'+model_id+'_'+project_id + '_' +experiment_id+'_'+member_id+'_'+time_range+'.nc'
     else:
         file_volume = 'volume'+'_'+table_id+'_'+model_id+'_'+project_id + '_' +experiment_id+'_'+member_id+'_'+time_range+'.nc'
     volume_full_path = path + file_volume
@@ -297,9 +311,14 @@ def read_global_photoprod(variable_id,table_id,experiment_id,project_id,member_i
     
         
     if model_id == 'CESM2-v212':
+        volume['time'] = model_data['time']
         volume['lat'] = model_data['lat']
         volume['lev'] = model_data['lev']
-    
+
+
+    if model_id == 'UKESM1-0-LL' and experiment_id == 'transient2010s':
+        volume = volume.rename({'volcella': 'volume'})
+        
     atmprod = model_data['prodphoto'+variable_id]*volume['volume']
     days_in_month = model_data['time'].dt.days_in_month
     atmprod = atmprod.sum(dim=['lat','lev','lon'])*days_in_month*24.0*60.0*60.0  #kg sec-1 -> kg per month
@@ -339,6 +358,8 @@ def read_global_atmloss(variable_id,table_id,experiment_id,project_id,member_id,
     
     if model_id == 'NorESM2-LM-C':         
         file_volume = 'volume'+'_'+table_id+'_'+model_id+'_'+project_id + '_' +experiment_id+'_'+member_id+'_'+time_range+'12.nc'
+    elif model_id ==  'UKESM1-0-LL' :
+        file_volume = 'volcella'+'_'+table_id+'_'+model_id+'_'+project_id + '_' +experiment_id+'_'+member_id+'_'+time_range+'.nc'
     else:    
         file_volume = 'volume'+'_'+table_id+'_'+model_id+'_'+project_id + '_' +experiment_id+'_'+member_id+'_'+time_range+'.nc'
     volume_full_path = path + file_volume
@@ -358,10 +379,14 @@ def read_global_atmloss(variable_id,table_id,experiment_id,project_id,member_id,
               
     
     if model_id == 'CESM2-v212':
+        volume['time'] = model_data['time']
         volume['lat'] = model_data['lat']
         volume['lev'] = model_data['lev']
 
-    
+    if model_id == 'UKESM1-0-LL' and experiment_id == 'transient2010s':
+        volume = volume.rename({'volcella': 'volume'})
+
+        
     atmloss = model_data['loss'+variable_id]*volume['volume']
     days_in_month = model_data['time'].dt.days_in_month
     
@@ -414,6 +439,7 @@ def read_global_photoloss(variable_id,table_id,experiment_id,project_id,member_i
     volume = xr.open_mfdataset(volume_full_path, chunks={'time': 1})
 
     if model_id == 'CESM2-v212':
+        volume['time'] = model_data['time']
         volume['lat'] = model_data['lat']
         volume['lev'] = model_data['lev']
 

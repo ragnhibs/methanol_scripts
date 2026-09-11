@@ -14,8 +14,7 @@ def read_annual_mean():
     print(path+filename)
     
     
-    #if model_id == 'GFDL-ESM4-c1':
-    #    model_data = model_data.rename({variable_id.upper() + '_dvmr':variable_id})
+  
 
     field = model_data[variable_id].sel(time=slice(str(year_period[0]).zfill(4),str(year_period[1]).zfill(4)))
 
@@ -142,42 +141,80 @@ table_id = 'monthly'
 #model_id = 'EMAC-DLR'
 #model_id = 'NorESM2-LM-C'
 #model_id = 'LMDZ-INCA'
-model_id = 'CESM2-v212'
+#model_id = 'CESM2-v212'
 #model_id = 'EC-Earth3-AerChem'
 #model_id = 'GFDL-ESM4-c1'
+model_id = 'UKESM1-0-LL'
 
-experiment_id = 'cntr'
+#experiment_id = 'cntr'
+experiment_id = 'transient2010s'
 
 project_id = 'hyway'
 
 
-year_period_list = {'EMAC-DLR':[2039,2040],
-                    'NorESM2-LM-C':[2037,2038],
-                    'LMDZ-INCA':[2027,2029],
-                    'OsloCTM3v1-2':[2022,2023],
-                    'CESM2-v212':[2055,2075],
-                    'UKESM1-0-LL':[2010,2014],
-                    'GFDL-ESM4-c1':[50,60],
-                    'EC-Earth3-AerChem':[2024,2029]}
+if experiment_id == 'cntr':
 
-year_period = year_period_list[model_id]
 
-member_id_list = {'OsloCTM3v1-2':'r2',
-                  'EMAC-DLR':'r2',
-                  'NorESM2-LM-C':'r1',
-                  'LMDZ-INCA':'r1',
-                  'CESM2-v212':'r1',
-                  'EC-Earth3-AerChem':'r1',
-                  'GFDL-ESM4-c1':'r1'}
+    year_period_list = {'EMAC-DLR':[2039,2040],
+                        'NorESM2-LM-C':[2037,2038],
+                        'LMDZ-INCA':[2027,2029],
+                        'OsloCTM3v1-2':[2022,2023],
+                        'CESM2-v212':[2055,2075],
+                        'UKESM1-0-LL':[2010,2014],
+                        'GFDL-ESM4-c1':[50,60],
+                        'EC-Earth3-AerChem':[2024,2029]}
+    
+    year_period = year_period_list[model_id]
 
-member_id = member_id_list[model_id]
+    member_id_list = {'OsloCTM3v1-2':'r2',
+                      'EMAC-DLR':'r2',
+                      'NorESM2-LM-C':'r1',
+                      'LMDZ-INCA':'r1',
+                      'CESM2-v212':'r1',
+                      'EC-Earth3-AerChem':'r1',
+                      'GFDL-ESM4-c1':'r1'}
+    
+    member_id = member_id_list[model_id]
 
+
+elif experiment_id == 'transient2010s':
+    
+    member_id_list =  {'OsloCTM3v1-2':'r1',
+                       'NorESM2-LM-C':'r1',
+                       'EC-Earth3-AerChem':'r1',
+                       'EMAC-DLR':'r5',
+                       'LMDZ-INCA':'r2',
+                       'CESM2-v212':'r2',
+                       'GFDL-ESM4-c1':'r1',
+                       'UKESM1-0-LL':'r1'}
+    
+
+    
+    year_period_list = {'EMAC-DLR':[2010,2019],
+                        'NorESM2-LM-C':[2010,2019],
+                        'LMDZ-INCA':[2010,2019],
+                        'OsloCTM3v1-2':[2010,2019],
+                        'CESM2-v212':[2010,2019],
+                        'UKESM1-0-LL':[2010,2019],
+                        'GFDL-ESM4-c1':[2010,2019],
+                        'EC-Earth3-AerChem':[2010,2019]}
+
+    year_period = year_period_list[model_id]
+    member_id = member_id_list[model_id]
+
+else:
+    print('Not set up')
+    exit()
+
+     
 #Model data
 path = '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/'+experiment_id +'/'
 
 #Read area:
 if model_id =='EMAC-DLR':
-    areapath = '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/'
+    areapath = '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/fixed/'
+elif model_id =='CESM2-v212':
+        areapath = '/nird/home/ragnhibs/hyway/tmp/'
 elif model_id == 'EC-Earth3-AerChem':
     areapath =  '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/fixed/'
 else:

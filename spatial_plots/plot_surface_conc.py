@@ -17,13 +17,10 @@ def plot_map_annual_mean():
     print(path+filename)
     model_data = xr.open_mfdataset(path + filename)
     
-    if model_id == 'GFDL-ESM4-c1':
-        model_data = model_data.rename({variable_id.upper() + '_dvmr':variable_id})
+    
 
     if model_id == 'EMAC-DLR':
         field = model_data[variable_id].isel(lev=-1)*unit_scale[unit[variable_id]]
-    elif model_id == 'GFDL-ESM4-c1':
-        field = model_data[variable_id].isel(pfull=-1)*unit_scale[unit[variable_id]]
     else:
         field = model_data[variable_id].isel(lev=0)*unit_scale[unit[variable_id]]
     print(field.time)
@@ -48,14 +45,7 @@ def plot_map_annual_mean():
     weighted_surf = annual_mean_surf.weighted(areaxy)
     globalmean = weighted_surf.mean()
         
-    ax.set_title(variable_id + ' ' + unit[variable_id] + ' ' + model_id + ' ' + yrstr + ' annual mean:{:5.2f}'.format(globalmean.values))
-    
-    
-    
-    #if plot_obs:
-    #    ax.scatter(df_obs['Longitude'],df_obs['Latitude'],c=df_obs['Yearmean'],cmap=cmap,vmin=levels.min(),
-    #               vmax=levels.max(),edgecolors='black',
-    #               transform=ccrs.PlateCarree())
+    ax.set_title(variable_id + ' ' + unit[variable_id] + ' ' + model_id + ' annual mean:{:5.2f}'.format(globalmean.values))
 
                 
     ax.coastlines()
@@ -148,38 +138,73 @@ def plot_scatter_obs_mod(ax,field,df_obs):
     
 #Experiment and simulation infor:
 table_id = 'monthly'
-experiment_id = 'cntr'
+#experiment_id = 'cntr'
+experiment_id = 'transient2010s'
+
 project_id = 'hyway'
 
-
-model_id_list = ['OsloCTM3v1-2',
-                 #'EMAC-DLR',
-                 #'NorESM2-LM-C',
-                 'LMDZ-INCA',
-                 'CESM2-v212']#,
-                 #'EC-Earth3-AerChem',
-                 #'GFDL-ESM4-c1']
-
-member_id_list = {'OsloCTM3v1-2':'r2',
-                  'EMAC-DLR':'r2',
-                  'NorESM2-LM-C':'r1',
-                  'LMDZ-INCA':'r1',
-                  'CESM2-v212':'r1',
-                  'EC-Earth3-AerChem':'r1',
-                  'GFDL-ESM4-c1':'r1'}
+if experiment_id == 'cntr':
 
 
+    model_id_list = [#'OsloCTM3v1-2',
+                     #'LMDZ-INCA',
+                     'CESM2-v212']#,
+ 
 
-year_period_list = {'EMAC-DLR':[2039,2040],
-                    'NorESM2-LM-C':[2037,2038],
-                    'LMDZ-INCA':[2027,2029],
-                    'OsloCTM3v1-2':[2022,2023],
-                    'CESM2-v212':[2055,2075],
-                    'UKESM1-0-LL':[2010,2014],
-                    'GFDL-ESM4-c1':[50,60],
-                    'EC-Earth3-AerChem':[2024,2029]}
+    member_id_list = {'OsloCTM3v1-2':'r2',
+                      'EMAC-DLR':'r2',
+                      'NorESM2-LM-C':'r1',
+                      'LMDZ-INCA':'r1',
+                      'CESM2-v212':'r1',
+                      'EC-Earth3-AerChem':'r1',
+                      'GFDL-ESM4-c1':'r1'}
 
 
+
+    year_period_list = {'EMAC-DLR':[2039,2040],
+                        'NorESM2-LM-C':[2037,2038],
+                        'LMDZ-INCA':[2027,2029],
+                        'OsloCTM3v1-2':[2022,2023],
+                        'CESM2-v212':[2055,2075],
+                        'UKESM1-0-LL':[2010,2014],
+                        'GFDL-ESM4-c1':[50,60],
+                        'EC-Earth3-AerChem':[2024,2029]}
+
+elif experiment_id == 'transient2010s':
+    
+    member_id_list =  {'OsloCTM3v1-2':'r1',
+                       'NorESM2-LM-C':'r1',
+                       'EC-Earth3-AerChem':'r1',
+                       'EMAC-DLR':'r5',
+                       'LMDZ-INCA':'r2',
+                       'CESM2-v212':'r2',
+                       'GFDL-ESM4-c1':'r1',
+                       'UKESM1-0-LL':'r1'}
+    
+    
+    model_id_list = ['OsloCTM3v1-2',
+                  'NorESM2-LM-C',
+                  'EC-Earth3-AerChem',
+                  'EMAC-DLR',
+                  'LMDZ-INCA',
+                  'CESM2-v212',
+                  'GFDL-ESM4-c1',
+                  'UKESM1-0-LL']
+    
+    year_period_list = {'EMAC-DLR':[2010,2019],
+                        'NorESM2-LM-C':[2010,2019],
+                        'LMDZ-INCA':[2010,2019],
+                        'OsloCTM3v1-2':[2010,2019],
+                        'CESM2-v212':[2010,2019],
+                        'UKESM1-0-LL':[2010,2019],
+                        'GFDL-ESM4-c1':[2010,2019],
+                        'EC-Earth3-AerChem':[2010,2019]}
+else:
+    print('Not set up')
+    exit()
+
+
+    
 variable_id = 'ch3oh'
 #variable_id = 'co'
 
@@ -203,8 +228,8 @@ axs = axs.flatten()
 axs2 = axs2.flatten()
 
 time_range = '*'
-year = 2019
-yrstr = str(year)
+#year = 2019
+#yrstr = str(year)
 
     
 for mod, model_id in enumerate(model_id_list):
@@ -215,7 +240,9 @@ for mod, model_id in enumerate(model_id_list):
 
     #Read area:
     if model_id =='EMAC-DLR':
-        areapath = '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/'
+        areapath = '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/fixed/'
+    elif model_id =='CESM2-v212':
+        areapath = '/nird/home/ragnhibs/hyway/tmp/'
     elif model_id == 'EC-Earth3-AerChem':
         areapath =  '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/fixed/'
     else:

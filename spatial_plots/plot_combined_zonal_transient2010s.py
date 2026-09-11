@@ -22,9 +22,12 @@ def plot_zonal(field_3d, pfull_3d, cminmax,unit):
     # Use matplotlib's pcolormesh directly
     #im = ax.pcolormesh(lat, pressure, data, cmap=cmap, norm=LogNorm(vmin=cminmax[0], vmax=cminmax[1]))
     im = ax.pcolormesh(lat, pressure, data, cmap=cmap, vmin=cminmax[0], vmax=cminmax[1])
-    # Add colorbar
-    cbar = plt.colorbar(im, ax=ax)
-    cbar.ax.set_title(unit)
+
+    if m == antmod-1:
+        # Add colorbar
+        cbar = plt.colorbar(im, ax=ax)
+        cbar.ax.set_title(unit)
+        #cbar.ax.set_label(unit)
     #ax.set_yscale('log')
     ax.set_ylim([1000, 10])
     ax.yaxis.set_major_formatter(FormatStrFormatter('%d'))
@@ -59,37 +62,43 @@ unit_variable = {'prodch3oh':'mg m-3 yr-1',
 #               'prodch3oh':np.arange(0,2.2,0.2)*1e-11,
 #               'ch3oh':[0,10,50,100,500,1000,2000,3000,5000,10000,100000]}
 
-cminmax =  {'lossch3oh':[0,0.05],
-            'prodch3oh':[0,0.05],
+cminmax =  {'lossch3oh':[0,0.1],
+            'prodch3oh':[0,0.1],
             'ch3oh':[0,1.5]}
 
 
 project_id = 'hyway'
 table_id = 'monthly'
-experiment_id = 'cntr'
-year_period_list = {'LMDZ-INCA':[2027,2029],
-                    'OsloCTM3v1-2':[2022,2023],
-                    'CESM2-v212':[2055,2075]}
+experiment_id = 'transient2010s'
+year_period = [2010,2019]
+
+member_id_list =  {'OsloCTM3v1-2':'r1',
+                       'NorESM2-LM-C':'r1',
+                       'EC-Earth3-AerChem':'r1',
+                       'EMAC-DLR':'r5',
+                       'LMDZ-INCA':'r2',
+                       'CESM2-v212':'r2',
+                       'GFDL-ESM4-c1':'r1',
+                       'UKESM1-0-LL':'r1'}
 
 
-member_id_list = {'OsloCTM3v1-2':'r2',
-                  'EMAC-DLR':'r2',
-                  'NorESM2-LM-C':'r1',
-                  'LMDZ-INCA':'r1',
-                  'CESM2-v212':'r1',
-                  'EC-Earth3-AerChem':'r1',
-                  'GFDL-ESM4-c1':'r1'}
+model_id_list = ['OsloCTM3v1-2',
+                  'NorESM2-LM-C',
+                  'EC-Earth3-AerChem',
+                  'EMAC-DLR',
+                  'LMDZ-INCA',
+                  'CESM2-v212',
+                  'GFDL-ESM4-c1',
+                  'UKESM1-0-LL']
+antmod = len(model_id_list)
+model_id_list.sort()
 
-model_id_list = ['CESM2-v212',
-                 'LMDZ-INCA',
-                 'OsloCTM3v1-2']
-
-fig,axs = plt.subplots(nrows=3,ncols=3,figsize=(15,15))
+fig,axs = plt.subplots(nrows=3,ncols=antmod,figsize=(25,15))
 cmap = plt.get_cmap('BuPu')
 
 for m,model_id in enumerate(model_id_list):
     member_id = member_id_list[model_id]
-    year_period = year_period_list[model_id]
+    #year_period = year_period_list[model_id]
         
     
     
@@ -99,7 +108,7 @@ for m,model_id in enumerate(model_id_list):
     
     #levels = level_list[variable_id]
     plot_zonal(model_data, pfull,cminmax[variable_id],unit_variable[variable_id])
-    ax.set_title('CNTR '+ model_id + ' ' + 
+    ax.set_title( model_id + '\n' + 
                   variable_id )
 
     
@@ -114,22 +123,22 @@ for m,model_id in enumerate(model_id_list):
 
     
     plot_zonal(model_data*sec_per_year*kg_mg, pfull,cminmax[variable_id],unit_variable[variable_id])
-    ax.set_title('CNTR '+ model_id + ' ' + 
+    ax.set_title( model_id + '\n' + 
                   variable_id )
     ax = axs[2,m]
     variable_id = 'loss'+comp
     model_data, pfull = read_field_from_netcdf()
     
     plot_zonal(model_data*sec_per_year*kg_mg, pfull,cminmax[variable_id],unit_variable[variable_id])
-    ax.set_title('CNTR '+ model_id + ' ' + 
+    ax.set_title( model_id + '\n' + 
                   variable_id )
      
     
         
 
 fig.tight_layout()
-fig.savefig('Fig/zonal_plot.png', dpi=300, bbox_inches='tight')
-fig.savefig('Fig/zonal_plot.pdf', bbox_inches='tight')
+fig.savefig('Fig/zonal_plot_transient2010s.png', dpi=300, bbox_inches='tight')
+fig.savefig('Fig/zonal_plot_transient2010s.pdf', bbox_inches='tight')
 
 plt.tight_layout()
 plt.show()

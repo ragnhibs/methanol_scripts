@@ -16,7 +16,7 @@ project_id = 'hyway'
 
 experiment_id_list = ['transient2010s']
 
-member_id_list =  {'OsloCTM3v1-2':'r2',
+member_id_list =  {'OsloCTM3v1-2':'r1',
                    'NorESM2-LM-C':'r1',
                    'EC-Earth3-AerChem':'r1',
                    'EMAC-DLR':'r5',
@@ -26,30 +26,31 @@ member_id_list =  {'OsloCTM3v1-2':'r2',
                    'UKESM1-0-LL':'r1'}
 
 
-model_list = [#'OsloCTM3v1-2',
+model_list = [#'OsloCTM3v1-2']#,
               #'NorESM2-LM-C',
               #'EC-Earth3-AerChem',
-              #'EMAC-DLR',
-              #'LMDZ-INCA',
-              #'CESM2-v212',
-              'GFDL-ESM4-c1']#,
+              #'EMAC-DLR']#,
+              #'LMDZ-INCA']#,
+              'CESM2-v212']#,
+              #'GFDL-ESM4-c1']#,
               #'UKESM1-0-LL']
 
 
 
-molecw_list = {'ch3oh':32.032,
-               #'c2h6':30.068,
-               #'h2':2.016 ,
-               'ch4':16.042}#,
-               #'hcho':30.026,
-               #'h2o':18.015,
-               #'co':28.01}#,
-               #'o3':48.0,
-               #'mhp':48.042}
+#molecw_list = {'ch3oh':32.032,
+#               #'c2h6':30.068,
+#               #'h2':2.016 ,
+#               'ch4':16.042}#,
+#               #'hcho':30.026,
+#               #'h2o':18.015,
+#               #'co':28.01}#,
+#               #'o3':48.0,
+#               #'mhp':48.042}
 
-molecw_list = {'ch4':16.042,
-               'hcho':30.026,
-               'ch3oh':32.032} 
+molecw_list = {'ch3oh':32.032}
+#'ch4':16.042,
+#               'hcho':30.026,
+#               'ch3oh':32.032} 
 
 
 for variable_id in molecw_list:
@@ -71,14 +72,16 @@ for variable_id in molecw_list:
                 area_path = '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/transient2010s/'
             
     
-                
+            """    
             read_global_surfconc(variable_id,table_id,experiment_id,project_id,member_id,molecw,model_id,path,area_path)
             #burden is read for a different file
             read_global_burden(variable_id,table_id,experiment_id,project_id,member_id,molecw,model_id,path,area_path)
+            
+            """
             read_global_atmprod(variable_id,table_id,experiment_id,project_id,member_id,molecw,model_id,path,area_path)
             read_global_atmloss(variable_id,table_id,experiment_id,project_id,member_id,molecw,model_id,path,area_path)
             
-
+            """
 
             read_global_photoloss(variable_id,table_id,experiment_id,project_id,member_id,molecw,model_id,path,area_path)
             read_global_soilsink(variable_id,table_id,experiment_id,project_id,member_id,molecw,model_id,path,area_path)
@@ -88,3 +91,4 @@ for variable_id in molecw_list:
             read_global_emis(variable_id,table_id,experiment_id,project_id,member_id,molecw,model_id,path,area_path)
         
     
+            """

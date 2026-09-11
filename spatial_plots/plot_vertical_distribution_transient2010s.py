@@ -36,10 +36,11 @@ def plot_zonal(field_3d, pfull_3d, cminmax):
     ax.set_title('')
 
 
-def read_prodloss():
+def read_vmr():
     filename = path +'/'+experiment_id+'/'+ variable_id+'_'+table_id+'_'+model_id+'_'+project_id + '_' +experiment_id+'_'+member_id+'_'+time_range+'.nc'
-
+    print('Filename:')
     print(filename)
+    
     #Read variable:
     model_data = xr.open_mfdataset(filename).sel(time=slice(str(year_period[0]),str(year_period[1])))
     print(model_data.time)
@@ -62,7 +63,7 @@ def read_prodloss():
     return model_field, pressure_field
 
 #Read precaluculated netcdf files:
-def read_prodloss_from_netcdf():
+def read_vmr_from_netcdf():
     print('Read precalculated netcdf files')
     filename = 'results_netcdf/'+variable_id+'_'+table_id+'_'+model_id+'_'+project_id + '_' +experiment_id+'_'+member_id+'_'+str(year_period[0])+'_'+str(year_period[1])+'.nc'
     model_data = xr.open_dataset(filename)
@@ -74,129 +75,126 @@ def read_prodloss_from_netcdf():
 #Experiment and simulation infor:
 table_id = 'monthly'
 
-#experiment_id = 'cntr'
-experiment_id = 'transient2010s'
 
-#model_id = 'OsloCTM3v1-2'
-#model_id = 'EMAC-DLR'
-#model_id = 'NorESM2-LM-C'
-#model_id = 'LMDZ-INCA'
-#model_id = 'CESM2-v212'
-#model_id = 'EC-Earth3-AerChem'
-#model_id = 'GFDL-ESM4-c1'
-model_id = 'UKESM1-0-LL'
+model_id_list  =  ['OsloCTM3v1-2',
+                   'NorESM2-LM-C',
+                   'EC-Earth3-AerChem',
+                   'EMAC-DLR',
+                   'LMDZ-INCA',
+                   'CESM2-v212',
+                   'GFDL-ESM4-c1',
+                   'UKESM1-0-LL']
+
 
 project_id = 'hyway'
 time_range = '*'
 
-
-if experiment_id == 'cntr':
-    year_period_list = {'LMDZ-INCA':[2027,2029],
-                        'OsloCTM3v1-2':[2022,2023],
-                        'CESM2-v212':[2055,2075]}
-    
-    member_id_list = {'OsloCTM3v1-2':'r2',
-                      'EMAC-DLR':'r2',
-                      'NorESM2-LM-C':'r1',
-                      'LMDZ-INCA':'r1',
-                      'CESM2-v212':'r1',
-                      'EC-Earth3-AerChem':'r1',
-                      'GFDL-ESM4-c1':'r1'}
-    
-    member_id = member_id_list[model_id]
+member_id_list =  {'OsloCTM3v1-2':'r1',
+                   'NorESM2-LM-C':'r1',
+                   'EC-Earth3-AerChem':'r1',
+                   'EMAC-DLR':'r5',
+                   'LMDZ-INCA':'r2',
+                   'CESM2-v212':'r2',
+                   'GFDL-ESM4-c1':'r1',
+                   'UKESM1-0-LL':'r1'}
 
 
-elif experiment_id  == 'transient2010s':
-    
-    member_id_list =  {'OsloCTM3v1-2':'r1',
-                       'NorESM2-LM-C':'r1',
-                       'EC-Earth3-AerChem':'r1',
-                       'EMAC-DLR':'r5',
-                       'LMDZ-INCA':'r2',
-                       'CESM2-v212':'r2',
-                       'GFDL-ESM4-c1':'r1',
-                       'UKESM1-0-LL':'r1'}
-    
 
-    
-    year_period_list = {'EMAC-DLR':[2010,2019],
-                        'NorESM2-LM-C':[2010,2019],
-                        'LMDZ-INCA':[2010,2019],
-                        'OsloCTM3v1-2':[2010,2019],
-                        'CESM2-v212':[2010,2019],
-                        'UKESM1-0-LL':[2010,2019],
-                        'GFDL-ESM4-c1':[2010,2019],
-                        'EC-Earth3-AerChem':[2010,2019]}
-
-
-    member_id = member_id_list[model_id]
-
-else:
-    print('Not set up')
-    exit()
+year_period_list = {'EMAC-DLR':[2010,2019],
+                    'NorESM2-LM-C':[2010,2019],
+                    'LMDZ-INCA':[2010,2019],
+                    'OsloCTM3v1-2':[2010,2019],
+                    'CESM2-v212':[2010,2019],
+                    'UKESM1-0-LL':[2010,2019],
+                    'GFDL-ESM4-c1':[2010,2019],
+                    'EC-Earth3-AerChem':[2010,2019]}
 
 
 
 
 
-    
-    
-#Model data
-path = '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/' #+experiment_id +'/'
 
 
 
-#experiment_id_list = ['ch3ohpert'] #,
-#experiment_id_list = ['h2pert','ch4pert']   
-
-#Experiment and simulation infor:
 
 
 
-variable_id_list = ['prodch3oh','lossch3oh']
+
+experiment_id = 'transient2010s'
+
+
 
 
 
 #Make figure: 
-noOfCols = 2
+noOfCols = 4
 noOfRows = 2
 fig, axes = plt.subplots(nrows=noOfRows,ncols=noOfCols, figsize=(10,14),constrained_layout=True)
+axes = axes.flatten()
+
+variable_id = 'ch3oh'
+
+cminmax_rel = {'ch3oh':[-10,10],
+               'ch4':[-1,1],
+               'hcho':[-1,1],
+               'o3':[-0.15,0.15],
+               'oh':[-0.25,0.25],
+               'h2o':[-0.0025,0.0025]}
+
+cminmax_abs = {'ch3oh':[-0.1,0.1],
+               'ch4':[-1,1],
+               'hcho':[-1,1],
+               'o3':[-0.2,0.2],
+               'oh':[-0.0025,0.0025],
+               'h2o':[-0.25,0.25]}
+
+cminmax_cntr = {'ch3oh':[0,1],
+                'ch4':[0,3000],
+               'hcho':[0,200],
+               'o3':[0,100],
+               'oh':[0,0.25],
+               'h2o':[0,4000]}
+
+unit_variable = {'ch3oh':'ppb',
+                 'ch4':'ppb',
+                 'hcho':'ppt',
+                 'o3':'ppb',
+                 'oh':'ppt',
+                 'h2o':'ppb'}
+
+unit_fact = {'ppb':1e9,
+             'ppt':1e12,
+             'vmr':1}
 
 
-var_list = ['prodch3oh','lossch3oh']
-
-cminmax_cntr = {'prodch3oh':[0,1e-15],
-                'lossch3oh':[0,1e-15]}
-
-
-unit_variable = {'prodch3oh':'kg m-2 s-1',
-                'lossch3oh':'kg m-2 s-1'}
-
-unit_fact ={'kg m-2 s-1':1}
 
 
 read_prev = False
 
-for v,variable_id in enumerate(var_list):
-
+for mod,model_id in enumerate(model_id_list):
+    #Model data
+    path = '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/' #+experiment_id +'/'
+    member_id = member_id_list[model_id]
     year_period = year_period_list[model_id]
-    #experiment_id = 'cntr'
+    
     if read_prev:
-        model_data_cntr, pfull_cntr = read_prodloss_from_netcdf()
+        model_data_cntr, pfull_cntr = read_vmr_from_netcdf()
     else:
-        model_data_cntr, pfull_cntr = read_prodloss()
+        model_data_cntr, pfull_cntr = read_vmr()
 
     print(model_data_cntr.mean(dim=['lon']))
     print(pfull_cntr.mean(dim=['lon']))
 
     #Plot control:
-    ax = axes[v,0]
+    ax = axes[mod]
     cmap = plt.get_cmap('OrRd')
     plot_zonal(model_data_cntr, pfull_cntr, cminmax_cntr[variable_id])
-    ax.set_title('CNTR ' + variable_id + ' [' + unit_variable[variable_id] + ']')
+    ax.set_title( variable_id + ' [' + unit_variable[variable_id] + ']')
 
  
 
-#plt.suptitle(model_id + ' ' + experiment_id_list[0]   +' rel to  '+ 'cntr') 
+
+
+plt.suptitle(model_id + ' ' + experiment_id)
 plt.show()
 exit()

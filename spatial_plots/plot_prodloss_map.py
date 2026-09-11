@@ -41,21 +41,22 @@ def plot_map_annual_mean():
     
     if model_id == 'CESM2-v212':
         volume['lat'] = model_data['lat']
+        volume['time'] = model_data['time']
         areaxy['lat'] = model_data['lat']
         volume['lev'] = model_data['lev']
 
     if model_id == 'UKESM1-0-LL':
         volume['volume'] = volume['volcella']
 
-    if model_id ==  'GFDL-ESM4-c1':
-        print(model_data)
-        volume = volume.rename({'pfull':'lev'})
+    #if model_id ==  'GFDL-ESM4-c1':
+    #    print(model_data)
+    #    volume = volume.rename({'pfull':'lev'})
         #volume = volume.sortby('lev',ascending=False)
 
-        print(volume.lev)
-        print(model_data.lev)
+    #    print(volume.lev)
+    #    print(model_data.lev)
         
-        model_data['lev'] = volume['lev']
+    #    model_data['lev'] = volume['lev']
     
     
 
@@ -182,45 +183,83 @@ def plot_map_month(month):
 
 
 
-        
-
-
-
 #Experiment and simulation infor:
 table_id = 'monthly'
 
+#model_id = 'LMDZ-INCA'
 #model_id = 'OsloCTM3v1-2'
 #model_id = 'EMAC-DLR'
 #model_id = 'NorESM2-LM-C'
-model_id = 'LMDZ-INCA'
+
 #model_id = 'CESM2-v212'
 #model_id = 'EC-Earth3-AerChem'
 #model_id = 'GFDL-ESM4-c1'
+model_id = 'UKESM1-0-LL'
+#experiment_id = 'cntr'
+experiment_id = 'transient2010s'
 
-experiment_id = 'cntr'
 project_id = 'hyway'
 time_range = '*'
 
-year_period_list = {'LMDZ-INCA':[2027,2029],
-                    'OsloCTM3v1-2':[2022,2023],
-                    'CESM2-v212':[2055,2075]}
 
-member_id_list = {'OsloCTM3v1-2':'r2',
-                  'EMAC-DLR':'r2',
-                  'NorESM2-LM-C':'r1',
-                  'LMDZ-INCA':'r1',
-                  'CESM2-v212':'r1',
-                  'EC-Earth3-AerChem':'r1',
-                  'GFDL-ESM4-c1':'r1'}
+if experiment_id == 'cntr':
 
-member_id = member_id_list[model_id]
+    year_period_list = {'LMDZ-INCA':[2027,2029],
+                        'OsloCTM3v1-2':[2022,2023],
+                        'CESM2-v212':[2055,2075]}
+    
+    member_id_list = {'OsloCTM3v1-2':'r2',
+                      'EMAC-DLR':'r2',
+                      'NorESM2-LM-C':'r1',
+                      'LMDZ-INCA':'r1',
+                      'CESM2-v212':'r1',
+                      'EC-Earth3-AerChem':'r1',
+                      'GFDL-ESM4-c1':'r1'}
+    
+    member_id = member_id_list[model_id]
 
+
+elif experiment_id == 'transient2010s':
+    
+    member_id_list =  {'OsloCTM3v1-2':'r1',
+                       'NorESM2-LM-C':'r1',
+                       'EC-Earth3-AerChem':'r1',
+                       'EMAC-DLR':'r5',
+                       'LMDZ-INCA':'r2',
+                       'CESM2-v212':'r2',
+                       'GFDL-ESM4-c1':'r1',
+                       'UKESM1-0-LL':'r1'}
+    
+
+    
+    year_period_list = {'EMAC-DLR':[2010,2019],
+                        'NorESM2-LM-C':[2010,2019],
+                        'LMDZ-INCA':[2010,2019],
+                        'OsloCTM3v1-2':[2010,2019],
+                        'CESM2-v212':[2010,2019],
+                        'UKESM1-0-LL':[2010,2019],
+                        'GFDL-ESM4-c1':[2010,2019],
+                        'EC-Earth3-AerChem':[2010,2019]}
+
+
+    member_id = member_id_list[model_id]
+
+else:
+    print('Not set up')
+    exit()
+
+
+
+
+    
 #Model data
 path = '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/'+experiment_id +'/'
 
 #Read area:
 if model_id =='EMAC-DLR':
-    areapath = '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/'
+    areapath = '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/fixed/'
+elif model_id =='CESM2-v212':
+    areapath = '/nird/home/ragnhibs/hyway/tmp/'
 elif model_id == 'EC-Earth3-AerChem':
     areapath =  '/projects/NS11106K/HYway/modelling_repository/'+model_id+'/fixed/'
 else:
@@ -239,9 +278,11 @@ else:
     areaxy = data_area['areacella']
 
 
-#variable_id = 'prodch3oh'
-variable_id = 'lossch3oh'
-#variable_id = 'prodco'
+
+
+
+
+
 
 
 #add_obs()
@@ -268,7 +309,7 @@ level_list =  {'prodch3oh':np.arange(0,10.5,0.5)*1e-12,
 
 
 
-levels = level_list[variable_id]
+
 
 
 fig,axs = plt.subplots(nrows=2,ncols=1,figsize=(10,10),subplot_kw={'projection': ccrs.PlateCarree()}) 
@@ -276,7 +317,19 @@ cmap = plt.get_cmap('BuPu')
 
 
 ax = axs[0]
+
+
+
+variable_id = 'prodch3oh'
+levels = level_list[variable_id]
 plot_map_annual_mean()
 
-plt.show()
+ax = axs[1]
+
+variable_id = 'lossch3oh'
+levels = level_list[variable_id]
+plot_map_annual_mean()
+
+print('Done')
+#plt.show()
 
