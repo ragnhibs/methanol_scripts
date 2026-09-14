@@ -140,19 +140,21 @@ table_id = 'monthly'
 #model_id = 'OsloCTM3v1-2'
 #model_id = 'EMAC-DLR'
 #model_id = 'NorESM2-LM-C'
-#model_id = 'LMDZ-INCA'
+model_id = 'LMDZ-INCA'
 #model_id = 'CESM2-v212'
 #model_id = 'EC-Earth3-AerChem'
 #model_id = 'GFDL-ESM4-c1'
-model_id = 'UKESM1-0-LL'
+#model_id = 'UKESM1-0-LL'
+
 
 #experiment_id = 'cntr'
-experiment_id = 'transient2010s'
+experiment_id = 'ch3ohpert'
+#experiment_id = 'transient2010s'
 
 project_id = 'hyway'
 
 
-if experiment_id == 'cntr':
+if experiment_id == 'cntr' or experiment_id == 'ch3ohpert':
 
 
     year_period_list = {'EMAC-DLR':[2039,2040],
